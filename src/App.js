@@ -1,17 +1,16 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
 
 function App() {
-  const api = {
-    key: "82aa72c74c59ec0131ec5316dbe1f5c6",
-    base: "https://api.openweathermap.org/data/2.5/",
-  };
   const [searchInput, setSearchInput] = useState("");
   const [searchCity, setSearchCity] = useState("");
   const [weatherInfo, setWeatherInfo] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const api = {
+    key: "82aa72c74c59ec0131ec5316dbe1f5c6",
+    base: "https://api.openweathermap.org/data/2.5/",
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     setSearchCity(searchInput);
@@ -39,7 +38,7 @@ function App() {
       setLoading(false);
     };
     fetchWeatherData();
-  }, [searchCity]);
+  }, [searchCity, api.key, api.base]);
 
   return (
     <>
