@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import "./App.css";
+import Header from "./components/Header";
+import TaskList from "./components/TaskList";
+import AddTaskForm from "./components/AddTaskForm";
 
 function App() {
   const [taskList, setTaskList] = useState([
@@ -43,57 +46,19 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="title">
-        TODO List
-        <span>Get one item done at a time</span>
-      </h1>
-      <ul className="task-list">
-        {taskList
-          .filter((task) => (showIncomplete ? task.status !== 1 : true))
-          .map((task) => (
-            <li key={task.id} className={task.status ? "done" : ""}>
-              <span className="label">{task.title}</span>
-              <div className="action-box">
-                <input
-                  type="checkbox"
-                  className="btn-action btn-action-done"
-                  onChange={(e) => setTaskStatus(task.id, e.target.checked)}
-                  checked={Boolean(task.status)}
-                />
-                <button
-                  className="btn-action btn-action-remove"
-                  onClick={() => removeTask(task.id)}
-                >
-                  ✖
-                </button>
-              </div>
-            </li>
-          ))}
-      </ul>
-      <div className="filter-wrapper">
-        <label htmlFor="filter" className="filter-label">
-          Show incompleted tasks only
-        </label>
-        <input
-          type="checkbox"
-          className="btn-action btn-filter"
-          id="filter"
-          checked={showIncomplete}
-          onChange={handleShowIncomplete}
-        />
-      </div>
-      <form onSubmit={handleSubmit} className="form">
-        <label htmlFor="new-item">Add to the TODO list</label>
-        <input
-          type="text"
-          id="new-item"
-          value={newTask}
-          onChange={handleInputChange}
-        />
-        <button className="btn-add" type="submit">
-          ADD ITEM
-        </button>
-      </form>
+      <Header title="TODO List" subTitle="Get one item done at a time" />
+      <TaskList
+        tasks={taskList}
+        showIncomplete={showIncomplete}
+        setTaskStatus={setTaskStatus}
+        removeTask={removeTask}
+        handleShowIncomplete={handleShowIncomplete}
+      />
+      <AddTaskForm
+        handleSubmit={handleSubmit}
+        handleInputChange={handleInputChange}
+        newTask={newTask}
+      />
     </div>
   );
 }
