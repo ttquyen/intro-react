@@ -1,10 +1,8 @@
-import { Box, Container, Grid } from "@mui/material";
 import "./App.css";
 import PrimarySearchAppBar from "./components/PrimarySearchAppBar";
 
-import AppBox from "./components/AppBox";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 export const theme = createTheme({
   palette: {
     // mode: "dark",
