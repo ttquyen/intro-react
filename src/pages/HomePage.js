@@ -3,14 +3,18 @@ import React, { useState } from "react";
 import AppBox from "../components/AppBox";
 import jobList from "../data.json";
 import { useNavigate } from "react-router-dom";
+import AppModal from "../components/AppModal";
+import { JobPostingsContext } from "../App";
 const ITEM_PER_PAGE = 5;
 function HomePage() {
   const navigate = useNavigate();
   const [dataList, setDataList] = useState(jobList.slice(0, 5) || []);
   const [page, setPage] = useState(1);
-
+  const contextProps = React.useContext(JobPostingsContext);
+  const { openJobDetail, setOpenJobDetail } = contextProps;
   const handleBtnLearnMore = (id) => {
     navigate(`/detail/${id}`);
+    setOpenJobDetail(true);
   };
   const handleChangePage = (event, value) => {
     setDataList(
@@ -31,6 +35,7 @@ function HomePage() {
           </Grid>
         ))}
       </Grid>
+      {openJobDetail && <AppModal />}
       <Pagination
         sx={{ display: "flex", justifyContent: "center" }}
         alignitems="center"
