@@ -29,7 +29,7 @@ export default function AppModal() {
   return (
     <div>
       <Modal
-        open={openJobDetail}
+        open={openJobDetail || true}
         onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
