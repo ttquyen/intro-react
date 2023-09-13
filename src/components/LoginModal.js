@@ -28,12 +28,11 @@ const style = {
 };
 
 export default function LoginModal() {
-  console.log("ZOOOOO");
   const contextProps = useContext(JobPostingsContext);
   const { openSignIn, setOpenSignIn, setIsSignedIn, setOpenJobDetail } =
     contextProps;
   const navigate = useNavigate();
-  console.log(openSignIn);
+  // console.log("openSignIn", openSignIn);
 
   const handleCloseModal = () => {
     setOpenSignIn(false);
@@ -49,7 +48,6 @@ export default function LoginModal() {
   const { handleSubmit } = methods;
   const [showPassword, setShowPassword] = useState(false);
   const onSubmit = (data) => {
-    console.log(data);
     localStorage.setItem("username", JSON.stringify(data?.username));
     localStorage.setItem("password", JSON.stringify(data?.password));
     setIsSignedIn(true);

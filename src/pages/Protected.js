@@ -1,16 +1,16 @@
 import { Navigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { JobPostingsContext } from "../App";
-const Protected = ({ isLoggedIn, children }) => {
+const Protected = ({ children }) => {
   const contextProps = useContext(JobPostingsContext);
-  const { setOpenSignIn } = contextProps;
+  const { setOpenSignIn, isSignedIn } = contextProps;
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isSignedIn) {
       setOpenSignIn(true);
     }
-  }, [isLoggedIn, setOpenSignIn]);
+  }, [isSignedIn, setOpenSignIn]);
 
-  if (!isLoggedIn) {
+  if (!isSignedIn) {
     return <Navigate to="/login" replace />;
   }
   return children;

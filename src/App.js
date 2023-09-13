@@ -13,7 +13,14 @@ function App() {
   const [openSignIn, setOpenSignIn] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [openJobDetail, setOpenJobDetail] = useState(false);
-  useEffect(() => {}, [openSignIn, openJobDetail]);
+  useEffect(() => {
+    // console.log("isSignedIn", isSignedIn);
+    if (localStorage.getItem("username") !== "") {
+      // console.log("check signed");
+      setIsSignedIn(true);
+    }
+    // console.log("isSignedIn", isSignedIn);
+  }, [isSignedIn]);
 
   const handleOpenSignIn = () => {
     setOpenSignIn(true);
@@ -44,7 +51,7 @@ function App() {
             <Route
               path="/detail/:jobId"
               element={
-                <Protected isLoggedIn={isSignedIn}>
+                <Protected>
                   <AppModal />
                 </Protected>
               }
