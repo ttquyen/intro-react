@@ -5,13 +5,14 @@ import jobList from "../data.json";
 import { useNavigate } from "react-router-dom";
 import AppModal from "../components/AppModal";
 import { JobPostingsContext } from "../App";
+import LoginModal from "../components/LoginModal";
 const ITEM_PER_PAGE = 5;
-function HomePage() {
+function JobManagement() {
   const navigate = useNavigate();
   const [dataList, setDataList] = useState(jobList.slice(0, 5) || []);
   const [page, setPage] = useState(1);
   const contextProps = React.useContext(JobPostingsContext);
-  const { openJobDetail, setOpenJobDetail } = contextProps;
+  const { openJobDetail, setOpenJobDetail, openSignIn } = contextProps;
   const handleBtnLearnMore = (id) => {
     navigate(`/detail/${id}`);
     setOpenJobDetail(true);
@@ -36,6 +37,7 @@ function HomePage() {
         ))}
       </Grid>
       {openJobDetail && <AppModal />}
+      {openSignIn && <LoginModal />}
       <Pagination
         sx={{ display: "flex", justifyContent: "center" }}
         alignitems="center"
@@ -47,4 +49,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default JobManagement;

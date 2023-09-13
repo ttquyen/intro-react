@@ -1,28 +1,28 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import "./App.css";
-import PrimarySearchAppBar from "./components/PrimarySearchAppBar";
 
-import { Outlet, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import AppModal from "./components/AppModal";
+import Protected from "./pages/Protected";
+import JobManagement from "./pages/JobManagement";
+import LoginModal from "./components/LoginModal";
 
 export const JobPostingsContext = createContext();
 function App() {
-  // const location = useLocation();
-  const navigate = useNavigate();
-
-  // const background = location.state && location.state.background;
   const [openSignIn, setOpenSignIn] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [openJobDetail, setOpenJobDetail] = useState(false);
+  useEffect(() => {}, [openSignIn, openJobDetail]);
 
   const handleOpenSignIn = () => {
-    navigate("/login");
     setOpenSignIn(true);
   };
 
   const handleSignOut = () => {
     setIsSignedIn(false);
-    navigate("/");
     localStorage.removeItem("username");
+    localStorage.removeItem("password");
   };
   return (
     <JobPostingsContext.Provider
@@ -37,8 +37,22 @@ function App() {
         setOpenJobDetail,
       }}
     >
-      <PrimarySearchAppBar />
-      <Outlet />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}>
+            <Route path="/" element={<JobManagement />} />
+            <Route
+              path="/detail/:jobId"
+              element={
+                <Protected isLoggedIn={isSignedIn}>
+                  <AppModal />
+                </Protected>
+              }
+            />
+          </Route>
+          <Route path="/login" element={<LoginModal />} />
+        </Routes>
+      </BrowserRouter>
     </JobPostingsContext.Provider>
   );
 }

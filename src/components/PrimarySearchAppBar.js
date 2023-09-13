@@ -8,10 +8,12 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import LoginIcon from "@mui/icons-material/Login";
+import { JobPostingsContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -59,9 +61,17 @@ export default function PrimarySearchAppBar() {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+  const contextProps = React.useContext(JobPostingsContext);
+  const { isSignedIn, setOpenSignIn, handleSignOut } = contextProps;
+  const navigate = useNavigate();
   const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    if (isSignedIn) {
+      setAnchorEl(event.currentTarget);
+    } else {
+      setOpenSignIn(true);
+      setAnchorEl(null);
+      navigate(`/login`);
+    }
   };
 
   const handleMobileMenuClose = () => {
@@ -74,7 +84,13 @@ export default function PrimarySearchAppBar() {
   };
 
   const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
+    if (isSignedIn) {
+      setMobileMoreAnchorEl(event.currentTarget);
+    } else {
+      setOpenSignIn(true);
+      setMobileMoreAnchorEl(null);
+      navigate(`/login`);
+    }
   };
 
   const menuId = "primary-search-account-menu";
@@ -95,10 +111,9 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={handleSignOut}>Logout</MenuItem>
     </Menu>
   );
-
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
@@ -135,22 +150,13 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ flexGrow: 1, marginBottom: "16px" }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-            MUI
+            Job Routing
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -162,7 +168,14 @@ export default function PrimarySearchAppBar() {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}
+          >
+            {isSignedIn && (
+              <Typography>
+                {localStorage.getItem("username").split('"')}
+              </Typography>
+            )}
             <IconButton
               size="large"
               edge="end"
@@ -172,7 +185,7 @@ export default function PrimarySearchAppBar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              {isSignedIn ? <AccountCircle /> : <LoginIcon />}
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
@@ -189,8 +202,8 @@ export default function PrimarySearchAppBar() {
           </Box>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+      {isSignedIn && renderMobileMenu}
+      {isSignedIn && renderMenu}
     </Box>
   );
 }
