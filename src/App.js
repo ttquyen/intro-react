@@ -15,7 +15,8 @@ function App() {
   const [openJobDetail, setOpenJobDetail] = useState(false);
   useEffect(() => {
     // console.log("isSignedIn", isSignedIn);
-    if (localStorage.getItem("username") !== "") {
+    if (localStorage.getItem("username") !== null) {
+      // console.log(localStorage.getItem("username"));
       // console.log("check signed");
       setIsSignedIn(true);
     }
@@ -30,6 +31,7 @@ function App() {
     setIsSignedIn(false);
     localStorage.removeItem("username");
     localStorage.removeItem("password");
+    console.log("first");
   };
   return (
     <JobPostingsContext.Provider

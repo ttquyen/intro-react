@@ -92,6 +92,10 @@ export default function PrimarySearchAppBar() {
       navigate(`/login`);
     }
   };
+  const handleLogout = () => {
+    handleMenuClose();
+    handleSignOut();
+  };
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -111,7 +115,7 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleSignOut}>Logout</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
   const mobileMenuId = "primary-search-account-menu-mobile";
@@ -173,7 +177,7 @@ export default function PrimarySearchAppBar() {
           >
             {isSignedIn && (
               <Typography>
-                {localStorage.getItem("username").split('"')}
+                {localStorage.getItem("username")?.split('"')}
               </Typography>
             )}
             <IconButton
